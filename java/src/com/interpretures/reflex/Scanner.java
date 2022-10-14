@@ -1,6 +1,5 @@
 package com.interpretures.reflex;
 
-import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +78,9 @@ public class Scanner {
                 if (match('/')) {
                     // A comment goes until the end of the line
                     while (peek() != '\n' && !isAtEnd()) advance();
-                } else addToken(SLASH);
+                } else if (match('*')){
+                    multiComment();
+            } else addToken(SLASH);
                 break;
             case ' ':
             case '\t':
@@ -150,6 +151,21 @@ public class Scanner {
         return current==source.length();
     }
 
+    public void multiComment() {
+        while (!isAtEnd()) {
+            if (peek() == '*' && peekNext() == '/') {
+                break;
+            } else if (peek() == '\n') line++;
+
+            current++;
+        }
+
+        if (isAtEnd() && !(peek() == '*' && peekNext() == '/') ) {
+            Reflex.error(line, "Undetermined comment");
+            return;
+        }
+        current+=2;
+    }
     public void string() {
         while (peek() != '"' && !isAtEnd()) {
             if (peek() == '\n') line++;
