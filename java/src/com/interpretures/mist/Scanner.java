@@ -1,4 +1,4 @@
-package com.interpretures.reflex;
+package com.interpretures.mist;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 
-import static com.interpretures.reflex.TokenType.*;
+import static com.interpretures.mist.TokenType.*;
 
 public class Scanner {
     private final String source;
@@ -96,7 +96,7 @@ public class Scanner {
                 } else if(isAlpha(c)){
                     identifier();
                 } else {
-                    Reflex.error(line, "Unexpected character: " + "'" + c + "'");
+                    Mist.error(line, "Unexpected character: " + "'" + c + "'");
                 }
                 break;
         }
@@ -161,7 +161,7 @@ public class Scanner {
         }
 
         if (isAtEnd() && !(peek() == '*' && peekNext() == '/') ) {
-            Reflex.error(line, "Undetermined comment");
+            Mist.error(line, "Undetermined comment");
             return;
         }
         current+=2;
@@ -174,7 +174,7 @@ public class Scanner {
 
         // if brace doesn't close
         if (isAtEnd()){
-            Reflex.error(line,"Undetermined string.");
+            Mist.error(line,"Undetermined string.");
         }
 
         advance();

@@ -1,6 +1,4 @@
-package com.interpretures.reflex;
-
-import com.interpretures.tool.GenerateAst;
+package com.interpretures.mist;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,15 +6,14 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 
-public class Reflex {
+public class Mist {
     public static boolean hadError = false;
 
     public static void main(String[] args) throws IOException {
         // Generating ASTs expressions
-//        GenerateAst.main(new String[]{"/Users/artur/Programming/MyProjects/Reflex/java/src/com/interpretures/reflex"});
+//        GenerateAst.main(new String[]{"/Users/artur/Programming/MyProjects/Reflex/java/src/com/interpretures/mist"});
         if (args.length > 1){
             System.out.println("Usage: reflex [script]");
             System.exit(64);
