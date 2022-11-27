@@ -1,5 +1,7 @@
 package com.interpretures.mist;
 
+import com.interpretures.tool.GenerateAst;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,15 +15,16 @@ public class Mist {
 
     public static void main(String[] args) throws IOException {
         // Generating ASTs expressions
-//        GenerateAst.main(new String[]{"/Users/artur/Programming/MyProjects/Reflex/java/src/com/interpretures/mist"});
-        if (args.length > 1){
+        GenerateAst.main(new String[]{"/Users/artur/Programming/MyProjects/Reflex/java/src/com/interpretures/mist"});
+        return;
+        /*if (args.length > 1){
             System.out.println("Usage: reflex [script]");
             System.exit(64);
         } else if (args.length ==1 ){
             runFile(args[0]);
         } else {
             runPrompt();
-        }
+        }*/
     }
 
     private static void runFile(String path) throws IOException {
