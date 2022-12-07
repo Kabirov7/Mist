@@ -1,5 +1,8 @@
 package com.interpretures.mist;
 
+import java.util.Arrays;
+import java.util.Stack;
+
 public class AstPrinter implements Expr.Visitor<String> {
     public String print(Expr expr) {
         return expr.accept(this);
@@ -41,7 +44,7 @@ public class AstPrinter implements Expr.Visitor<String> {
     }
 
     public static void main(String[] args) {
-        Expr expression = new Expr.Binary(
+/*        Expr expression = new Expr.Binary(
                 new Expr.Unary(
                         new Token(TokenType.MINUS, "-", null, 1),
                         new Expr.Literal(123)),
@@ -49,6 +52,10 @@ public class AstPrinter implements Expr.Visitor<String> {
                 new Expr.Grouping(
                         new Expr.Literal(45.67)));
 
-        System.out.println(new AstPrinter().print(expression));
+        System.out.println(new AstPrinter().print(expression));*/
+        Converter.InfixToPostfix("( ( A * B ) + ( C / D ) )");
+        Converter.InfixToPostfix("( ( A * ( B + C ) ) / D )");
+        Converter.InfixToPostfix("( 1 + 2 ) * ( 4 - 3 )");
+
     }
 }
