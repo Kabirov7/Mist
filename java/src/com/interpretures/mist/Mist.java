@@ -1,7 +1,5 @@
 package com.interpretures.mist;
 
-import com.interpretures.tool.GenerateAst;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,16 +13,16 @@ public class Mist {
 
     public static void main(String[] args) throws IOException {
         // Generating ASTs expressions
-        GenerateAst.main(new String[]{"/Users/artur/Programming/MyProjects/Reflex/java/src/com/interpretures/mist"});
-        return;
-        /*if (args.length > 1){
+        // GenerateAst.main(new String[]{"/Users/artur/Programming/MyProjects/Reflex/java/src/com/interpretures/mist"});
+        // return;
+        if (args.length > 1){
             System.out.println("Usage: reflex [script]");
             System.exit(64);
         } else if (args.length ==1 ){
             runFile(args[0]);
         } else {
             runPrompt();
-        }*/
+        }
     }
 
     private static void runFile(String path) throws IOException {
@@ -45,6 +43,7 @@ public class Mist {
             String line = reader.readLine();
             if (line.equals("exit()")) break;
             run(line);
+            hadError = false;
         }
 
     }
@@ -52,14 +51,24 @@ public class Mist {
     private static void run(String source){
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
+        Parser parser = new Parser(tokens);
+        Expr expression = parser.parse();
 
-        for (Token token : tokens){
-            System.out.println(token);
-        }
+        if (hadError) return;
+
+        System.out.println(new AstPrinter().print(expression));
     }
 
     static void error(int line, String message){
         report(line, "", message);
+    }
+
+    static void error(Token token, String message){
+        if (token.type == TokenType.EOF){
+            report(token.line, " at end", message);
+        }else{
+            report(token.line, " at '"+token.lexeme + "'", message);
+        }
     }
 
     private static void report(int line, String where, String message){

@@ -31,16 +31,16 @@ public class GenerateAst {
 
         defineVisitor(writer, baseName, types);
 
+        // The base accept method for Visitors
+        writer.println();
+        writer.println("    abstract <R> R accept(Visitor<R> visitor);");
+
         // The AST classes
         for (String type : types) {
             String className = type.split(":")[0].trim();
             String fields = type.split(":")[1].trim();
             defineType(writer, baseName, className, fields);
         }
-
-        // The base accept method for Visitors
-        writer.println();
-        writer.println("    abstract <R> R accept(Visitor<R> visitor);");
 
         writer.println("}\n");
         writer.close();
