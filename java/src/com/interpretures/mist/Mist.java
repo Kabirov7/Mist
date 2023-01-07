@@ -55,13 +55,15 @@ public class Mist {
     private static void run(String source){
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
-        Parser parser = new Parser(tokens);
-        Expr expression = parser.parse();
+        if (tokens.size() >1) {
+            Parser parser = new Parser(tokens);
+            Expr expression = parser.parse();
 
-        if (hadError) return;
+            if (hadError) return;
 
-        interpreter.interpret(expression);
-        System.out.println(new AstPrinter().print(expression));
+            interpreter.interpret(expression);
+            System.out.println(new AstPrinter().print(expression));
+        }
     }
 
     static void error(int line, String message){
