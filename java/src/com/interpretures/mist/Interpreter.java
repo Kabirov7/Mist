@@ -29,6 +29,7 @@ class Interpreter implements Expr.Visitor<Object> {
     public Object visitBinaryExpr(Expr.Binary expr) {
         Object left = evaluate(expr.left);
         Object right = evaluate(expr.right);
+        int compareResult;
 
         switch (expr.operator.type){
             case MINUS:
@@ -50,17 +51,28 @@ class Interpreter implements Expr.Visitor<Object> {
                 return (double) left * (double) right;
             // Conditionals
             case GREATER:
-                checkNumberOperands(expr.operator, left, right);
-                return (double) left > (double) right;
+                checkNumberOrStringOperands(expr.operator, left, right);
+                if (left instanceof Double) return (double) left > (double) right;
+                compareResult = ((String) left).compareTo((String) right);
+                return compareResult > 0;
             case GREATER_EQUAL:
-                checkNumberOperands(expr.operator, left, right);
-                return (double) left >= (double) right;
+                checkNumberOrStringOperands(expr.operator, left, right);
+                if (left instanceof Double)
+                    return (double) left >= (double) right;
+                compareResult = ((String) left).compareTo((String) right);
+                return compareResult >= 0;
             case LESS:
-                checkNumberOperands(expr.operator, left, right);
-                return (double) left < (double) right;
+                checkNumberOrStringOperands(expr.operator, left, right);
+                if (left instanceof Double)
+                    return (double) left < (double) right;
+                compareResult = ((String) left).compareTo((String) right);
+                return compareResult < 0;
             case LESS_EQUAL:
-                checkNumberOperands(expr.operator, left, right);
-                return (double) left <= (double) right;
+                checkNumberOrStringOperands(expr.operator, left, right);
+                if (left instanceof Double)
+                    return (double) left <= (double) right;
+                compareResult = ((String) left).compareTo((String) right);
+                return compareResult <= 0;
             case EQUAL_EQUAL:
                 return isEqual(left, right);
             case BANG_EQUAL:
@@ -104,6 +116,11 @@ class Interpreter implements Expr.Visitor<Object> {
     private void checkNumberOperands(Token operator, Object left, Object right) {
         if (left instanceof Double && right instanceof Double) return;
         throw new RuntimeError(operator, "Operands must be a numbers");
+    }
+
+    private void checkNumberOrStringOperands(Token operator, Object a, Object b){
+        if ((a instanceof Double && b instanceof Double) || (a instanceof String && b instanceof String)) return;
+        throw new RuntimeError(operator, "Operands must be two numbers or strings");
     }
 
     private boolean isTruthy(Object object) {
